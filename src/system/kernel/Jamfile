@@ -56,7 +56,7 @@ KernelMergeObject kernel_core.o :
 	UserEvent.cpp
 	usergroup.cpp
 	UserTimer.cpp
-
+	test.cpp
 	# events
 	wait_for_objects.cpp
 	Notifications.cpp
