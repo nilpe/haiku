@@ -51,7 +51,9 @@ aaa
 ビルドができることを確認したら､
 
 headers/private/system/syscalls.h:655付近に､
+```c
 extern int64 _kern_hello(int64 value);
+```
 headers/private/kernel/test.hを作って､
 
 ```c
