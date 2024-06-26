@@ -90,3 +90,5 @@ int64 _user_hello(int64 value)
 ```
 
 src/system/kernel/Jamfile:59付近にtest.cppを追加｡
+generated.x86_64/objects/haiku/x86_64/common/system/libroot/os/syscalls.S.inc
+に､SYSCALL2(_kern_hello, 287)が存在することを確認｡
