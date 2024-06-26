@@ -92,3 +92,34 @@ int64 _user_hello(int64 value)
 src/system/kernel/Jamfile:59付近にtest.cppを追加｡
 generated.x86_64/objects/haiku/x86_64/common/system/libroot/os/syscalls.S.inc
 に､SYSCALL2(_kern_hello, 287)が存在することを確認｡
+
+
+# デバイスドライバの作成
+
+src/add-ons/kernel/drivers/test/をMkdir
+src/addons/kernel/drivers/Jamfileに以下を追記
+```plain
+SubInclude HAIKU_TOP src add-ons kernel drivers test ;
+```
+src/add-ons/kernel/drivers/test/Jamfileを作り､
+```plaintext
+SubDir HAIKU_TOP src add-ons kernel drivers test ;
+
+SubInclude HAIKU_TOP src add-ons kernel drivers sensor test_driver ;
+
+
+```
+と書き込む｡
+src/add-ons/kernel/drivers/test/test_driverをmkdir｡
+src/add-ons/kernel/drivers/test/test_driver/Jamfileを作って､
+```plaintext
+SubDir HAIKU_TOP src add-ons kernel drivers test test_driver ;
+
+UsePrivateKernelHeaders ;
+
+KernelAddon pch_thermal :
+	test_driver.cpp
+	;
+
+```
+を書き込む｡
