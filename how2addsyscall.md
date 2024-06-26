@@ -105,7 +105,7 @@ src/add-ons/kernel/drivers/test/Jamfileを作り､
 ```plaintext
 SubDir HAIKU_TOP src add-ons kernel drivers test ;
 
-SubInclude HAIKU_TOP src add-ons kernel drivers sensor test_driver ;
+SubInclude HAIKU_TOP src add-ons kernel drivers test test_driver ;
 
 
 ```
