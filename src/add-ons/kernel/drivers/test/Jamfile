@@ -1,4 +1,8 @@
-SubDir HAIKU_TOP src add-ons kernel drivers test ;
+SubDir HAIKU_TOP src add-ons kernel drivers test  ;
 
-SubInclude HAIKU_TOP src add-ons kernel drivers test test_driver ;
+UsePrivateKernelHeaders ;
+
+KernelAddon test_driver :
+	test_driver.c
+	;
 

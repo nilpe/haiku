@@ -72,7 +72,7 @@ AddNewDriversToPackage input		: i2c_elan virtio_input ;
 #AddNewDriversToPackage audio hmulti	: virtio_sound ;
 
 # legacy drivers
-AddDriversToPackage					: console dprintf null <driver>tty usb_modeswitch zero ;
+AddDriversToPackage					: console dprintf null test1 <driver>tty usb_modeswitch zero ;
 AddDriversToPackage audio hmulti	: $(SYSTEM_ADD_ONS_DRIVERS_AUDIO) ;
 AddDriversToPackage audio old		: $(SYSTEM_ADD_ONS_DRIVERS_AUDIO_OLD) ;
 AddDriversToPackage bluetooth h2	: $(SYSTEM_ADD_ONS_DRIVERS_BT_H2) ;
@@ -85,6 +85,7 @@ AddDriversToPackage input			: ps2_hid usb_hid wacom ;
 AddDriversToPackage misc			: <driver>poke <driver>mem ;
 AddDriversToPackage net				: $(SYSTEM_ADD_ONS_DRIVERS_NET) ;
 AddDriversToPackage ports			: pc_serial usb_serial ;
+AddDriversToPackage test			: test_driver ;
 
 # kernel
 AddFilesToPackage : <revisioned>kernel_$(TARGET_ARCH) ;

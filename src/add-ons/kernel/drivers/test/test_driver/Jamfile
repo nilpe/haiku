@@ -1,8 +1,0 @@
-SubDir HAIKU_TOP src add-ons kernel drivers test test_driver ;
-
-UsePrivateKernelHeaders ;
-
-KernelAddon pch_thermal :
-	test_driver.cpp
-	;
-

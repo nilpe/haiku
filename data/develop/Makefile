@@ -123,7 +123,7 @@ APP_VERSION :=
 #	will instruct the "driverinstall" rule to place a symlink to your driver's
 #	binary in ~/add-ons/kernel/drivers/dev/video/usb, so that your driver will
 #	appear at /dev/video/usb when loaded. The default is "misc".
-DRIVER_PATH =
+DRIVER_PATH = 
 
 ## Include the Makefile-Engine
 DEVEL_DIRECTORY := \
