@@ -681,6 +681,7 @@ rule ArchitectureSetupWarnings architecture
 	EnableWerror src add-ons kernel drivers disk ;
 #	EnableWerror src add-ons kernel drivers display ;
 	EnableWerror src add-ons kernel drivers dvb ;
+	EnableWerror src add-ons kernel drivers test ;
 #	EnableWerror src add-ons kernel drivers graphics ;
 	EnableWerror src add-ons kernel drivers graphics intel_extreme ;
 	EnableWerror src add-ons kernel drivers input ;
