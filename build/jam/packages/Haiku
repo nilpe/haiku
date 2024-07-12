@@ -85,7 +85,7 @@ AddDriversToPackage input			: ps2_hid usb_hid wacom ;
 AddDriversToPackage misc			: <driver>poke <driver>mem ;
 AddDriversToPackage net				: $(SYSTEM_ADD_ONS_DRIVERS_NET) ;
 AddDriversToPackage ports			: pc_serial usb_serial ;
-AddNewDriversToPackage test			: test_driver ;
+AddDriversToPackage test2			: test_driver ;
 
 # kernel
 AddFilesToPackage : <revisioned>kernel_$(TARGET_ARCH) ;

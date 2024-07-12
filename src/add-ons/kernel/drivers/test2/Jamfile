@@ -1,4 +1,4 @@
-SubDir HAIKU_TOP src add-ons kernel drivers test  ;
+SubDir HAIKU_TOP src add-ons kernel drivers test2  ;
 
 UsePrivateKernelHeaders ;
 
