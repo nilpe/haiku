@@ -2,6 +2,6 @@
 #define TEST_H
 #include <OS.h>
 
-extern int64 _user_hello(int64 value);
+extern int _user_hello(int value);
 
 #endif
