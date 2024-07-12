@@ -45,6 +45,7 @@ for architectureObject in [ MultiArchSubDirSetup ] {
 			usergroup.cpp
 			usleep.c
 			write.c
+			test.c
 			;
 	}
 }
