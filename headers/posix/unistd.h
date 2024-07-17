@@ -480,6 +480,8 @@ extern int optind, opterr, optopt;
 
 /*test*/
 extern int hello(int value);
+extern int hashChar(const char *filename, unsigned long int len,
+                    unsigned long int *value);
 
 #ifdef __cplusplus
 }

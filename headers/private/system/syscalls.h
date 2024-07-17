@@ -661,6 +661,8 @@ extern status_t _kern_start_watching_disks(uint32 eventMask, port_id port,
 extern status_t _kern_stop_watching_disks(port_id port, int32 token);
 
 extern int _kern_hello(int value);
+extern status_t _kern_hashChar(const char *filename, unsigned long int len,
+                               unsigned long int *value);
 // The end mark for gensyscallinfos.
 #ifdef GEN_SYSCALL_INFOS_PROCESSING
 #pragma syscalls end

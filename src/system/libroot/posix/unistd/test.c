@@ -8,7 +8,10 @@
 #include <errno_private.h>
 #include <syscalls.h>
 
-int hello(int value){
+int hello(int value) { return _kern_hello(value); }
 
-    return value;
-};
+int hashChar(const char *filename, unsigned long int len,
+             unsigned long int *value) {
+
+  return _kern_hashChar(filename, len, value);
+}
