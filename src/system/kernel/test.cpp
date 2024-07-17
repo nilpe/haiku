@@ -1,6 +1,7 @@
 #include <Errors.h>
 #include <stdlib.h>
 #include <test.h>
+#include <thread.h>
 
 // 参考:src/system/kernel/disk_device_manager/ddm_userland_interface.cpp
 template <typename T>
@@ -24,12 +25,13 @@ inline int copy_to_user(T *user, const T *kernel, int len) {
     return B_BAD_ADDRESS;
   }
 
-  return user_memcpy(user, kernel, sizeof(Type));
+  return user_memcpy(user, kernel, sizeof(len));
 }
 
 int _user_hello(int value) { return value; }
 status_t _user_hashChar(const char *filename, unsigned long int len,
                         unsigned long int *value) {
+  syscall_64_bit_return_value();
   unsigned int rec_max = 255 * sizeof(char);
   char *fn = (char *)malloc(rec_max);
   if (fn == NULL) {
