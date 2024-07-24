@@ -1,6 +1,7 @@
 #ifndef _TEST_DRIVER_H
 #define _TEST_DRIVER_H
 
+#include <sys/ioccom.h>
 /*** ioctl用パラメータ(第3引数)の定義 ***/
 struct mydevice_values {
   int val1;
@@ -8,8 +9,8 @@ struct mydevice_values {
 };
 
 enum testdevice_state {
-  TESTDEVICE_STATE_DISABLE,
-  TESTDEVICE_STATE_ENABLE,
+  TESTDEVICE_STATE_DISABLE=1,
+  TESTDEVICE_STATE_ENABLE=2,
 };
 
 /*** ioctl用コマンド(request, 第2引数)の定義 ***/
