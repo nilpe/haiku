@@ -31,9 +31,9 @@
 #include <Drivers.h>
 #include <Errors.h>
 #include <KernelExport.h>
+#include <kernel.h>
 #include <stdlib.h>
 #include <string.h>
-
 static sem_id devMutex;
 static sem_id rwMutex;
 static char FIFO[FIFO_SIZE + 1];
@@ -41,7 +41,8 @@ static int charNum = 0;
 static enum testdevice_state state = TESTDEVICE_STATE_ENABLE;
 
 int32 api_version = B_CUR_DRIVER_API_VERSION;
-static int32 sOpenMask;
+int copy_from_user(void *kernel, const void *user, int len);
+int copy_to_user(void *user, const void *kernel, int len);
 
 int copy_from_user(void *kernel, const void *user, int len) {
   if (user == NULL) {
@@ -140,7 +141,7 @@ static status_t driver_read(void *cookie, off_t position, void *buf,
   char *kbuf = malloc(Num2Read);
   if (kbuf == NULL) {
     dprintf("Error in malloc\n");
-    return -ENOMEM;
+    return B_NO_MEMORY;
   }
   for (int i = 0; i < Num2Read; i++) {
     kbuf[i] = FIFO[i];
@@ -169,36 +170,38 @@ static status_t driver_write(void *cookie, off_t position, const void *buffer,
     length = FIFO_SIZE - charNum;
   }
   if (state == TESTDEVICE_STATE_DISABLE) {
-    printk("Device is disabled\n");
-    return num_bytes;
+    dprintf("Device is disabled\n");
+    return B_IO_ERROR;
   }
   char *kbuf = malloc(length + 1);
   if (kbuf == NULL) {
-    printk("Error in kmalloc\n");
-    return -ENOMEM;
+    dprintf("Error in kmalloc\n");
+    return B_NO_MEMORY;
   }
-  int t = copy_from_user(kbuf, buffer, (unsigned long int)length);
+  int t = copy_from_user(kbuf, buffer, length);
   if (t != 0) {
-    printk("Error in copy_from_user\n");
-    // return -EFAULT;
+    dprintf("Error in copy_from_user\n");
+    return B_BAD_ADDRESS;
   }
   length = length - t;
   kbuf[length] = '\0';
-  printk("Writing to device: %s\n", kbuf);
+  dprintf("Writing to device: %s\n", kbuf);
   acquire_sem(rwMutex);
   if (charNum + length + 1 > FIFO_SIZE) {
-    printk("FIFO is full\n");
-    return -ENOSPC;
+    dprintf("FIFO is full\n");
+    free(kbuf);
+    return B_BUFFER_NOT_AVAILABLE;
   }
   for (int i = 0; i < length; i++) {
     FIFO[charNum + i] = kbuf[i];
   }
   charNum = charNum + length;
   FIFO[charNum] = '\0';
-  printk("FIFO: %s\n", FIFO);
+  dprintf("FIFO: %s\n", FIFO);
   release_sem(rwMutex);
 
   *num_bytes = length;
+  free(kbuf);
   return B_OK;
 }
 
