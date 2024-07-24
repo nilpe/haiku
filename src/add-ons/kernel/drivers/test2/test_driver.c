@@ -28,23 +28,18 @@
  */
 #define FIFO_SIZE 1024
 #include "test_driver.h"
-#include <Drivers.h>
-#include <Errors.h>
-#include <KernelExport.h>
-#include <kernel.h>
-#include <stdlib.h>
-#include <string.h>
+
 static sem_id devMutex;
 static sem_id rwMutex;
 static char FIFO[FIFO_SIZE + 1];
 static int charNum = 0;
 static enum testdevice_state state = TESTDEVICE_STATE_ENABLE;
-
+static struct mydevice_values stored_values;
 int32 api_version = B_CUR_DRIVER_API_VERSION;
-int copy_from_user(void *kernel, const void *user, int len);
-int copy_to_user(void *user, const void *kernel, int len);
+status_t copy_from_user(void *kernel, const void *user, int len);
+status_t copy_to_user(void *user, const void *kernel, int len);
 
-int copy_from_user(void *kernel, const void *user, int len) {
+status_t copy_from_user(void *kernel, const void *user, int len) {
   if (user == NULL) {
     return B_BAD_VALUE;
   }
@@ -56,7 +51,7 @@ int copy_from_user(void *kernel, const void *user, int len) {
   return user_memcpy(kernel, user, len);
 }
 
-int copy_to_user(void *user, const void *kernel, int len) {
+status_t copy_to_user(void *user, const void *kernel, int len) {
   if (user == NULL) {
     return B_BAD_VALUE;
   }
@@ -206,8 +201,46 @@ static status_t driver_write(void *cookie, off_t position, const void *buffer,
 }
 
 static status_t driver_control(void *cookie, uint32 op, void *arg, size_t len) {
-  dprintf("test: control\n");
-  return B_ERROR;
+   dprintf("test: control\n");
+
+    switch (op) {
+        case MYDEVICE_SET_VALUES:
+            dprintf("MYDEVICE_SET_VALUES\n");
+            return copy_from_user(&stored_values, arg, sizeof(stored_values)) ;
+            
+            break;
+
+        case MYDEVICE_GET_VALUES:
+            dprintf("MYDEVICE_GET_VALUES\n");
+            return copy_to_user(arg, &stored_values, sizeof(stored_values));
+            
+            break;
+
+        case TESTDEVICE_STATE_WRITE:
+            dprintf("TESTDEVICE_STATE_WRITE\n");
+            return copy_from_user(&state, arg, sizeof(state)) ;
+           
+            break;
+
+        case TESTDEVICE_STATE_READ:
+            dprintf("TESTDEVICE_STATE_READ\n");
+            return copy_to_user(arg, &state, sizeof(state));
+            
+            break;
+
+        case TESTDEVICE_FIFO_CLEAN:
+            dprintf("TESTDEVICE_FIFO_CLEAN\n");
+            acquire_sem(rwMutex);
+            charNum = 0;
+            FIFO[0] = '\0';
+            release_sem(rwMutex);
+            break;
+
+        default:
+            dprintf("unsupported command %u\n", op);
+            return B_BAD_VALUE;
+    }
+    return B_OK;
 }
 
 const char **publish_devices(void) {
